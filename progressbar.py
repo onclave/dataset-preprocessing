@@ -1,3 +1,4 @@
+# https://stackoverflow.com/a/34325723/3640307
 def show (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
     
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
