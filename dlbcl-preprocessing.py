@@ -40,7 +40,7 @@ def read_dlbcl_raw_dataset():
 
     with open("DLBCL.txt", 'r') as datafile:
         for line in datafile:
-
+            line = line.rstrip()
             splitted_line_list = line.split("\t")
             raw_data_matrix.append(splitted_line_list)
 
@@ -57,13 +57,34 @@ def tidy_raw_dataset():
 
     progressbar.show(2, 9, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
-def remove_newline_regex():
+def write_as_csv():
 
     global data_matrix
+    global gene_attributes
     global progressbar_total
 
+    filename = "dlbcl-fl.csv"
+
+    writefile = open(filename, 'w+')
+    write_file_content = ""
+
+    for attribute in gene_attributes:
+        write_file_content += attribute + ","
+
+    write_file_content += "class\n"
+
     for sample in data_matrix:
-        sample[-1] = sample[-1][:-1]
+
+        line = ""
+
+        for value in sample[:-1]:
+            line += str(value) + ","
+
+        line += sample[-1] + "\n"
+        write_file_content += line
+
+    writefile.write(write_file_content)
+    writefile.close()
 
     progressbar.show(3, progressbar_total, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
@@ -215,7 +236,7 @@ def main():
     take_user_input()
     read_dlbcl_raw_dataset()
     tidy_raw_dataset()
-    remove_newline_regex()
+    write_as_csv()
     count_class_strength()
     convert_datapoints_to_number()
     normalize_data()

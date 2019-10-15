@@ -44,7 +44,7 @@ def read_leukemia_raw_dataset():
 
     with open("leukemia.txt", 'r') as datafile:
         for line in datafile:
-
+            line = line.rstrip()
             splitted_line_list = line.split("\t")
             raw_data_matrix.append(splitted_line_list)
 
@@ -87,16 +87,34 @@ def aggregate_same_class_samples():
 
     progressbar.show(3, progressbar_total, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
-def remove_newline_regex():
+def write_as_csv():
 
     global data_matrix
     global gene_attributes
     global progressbar_total
 
-    gene_attributes[-1] = gene_attributes[-1][:-1]
+    filename = "leukemia.csv"
+
+    writefile = open(filename, 'w+')
+    write_file_content = ""
+
+    for attribute in gene_attributes:
+        write_file_content += attribute + ","
+
+    write_file_content += "class\n"
 
     for sample in data_matrix:
-        sample[-1] = sample[-1][:-1]
+
+        line = ""
+
+        for value in sample[1:]:
+            line += str(value) + ","
+
+        line += sample[0] + "\n"
+        write_file_content += line
+
+    writefile.write(write_file_content)
+    writefile.close()
 
     progressbar.show(4, progressbar_total, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
@@ -167,6 +185,7 @@ def prepare_selected_dataset():
 
     global data_matrix
     global gene_attributes
+    global selected_data_matrix
     global selected_gene_attributes
     global snr_tuples
     global attribute_selection_count
@@ -234,7 +253,7 @@ def main():
     read_leukemia_raw_dataset()
     tidy_raw_dataset()
     aggregate_same_class_samples()
-    remove_newline_regex()
+    write_as_csv()
     convert_datapoints_to_number()
     normalize_data()
     sort_by_SNR()
