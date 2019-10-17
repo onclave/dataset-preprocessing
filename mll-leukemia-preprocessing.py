@@ -253,7 +253,7 @@ def normalize_data():
     )
 
 
-def sort_by_SNR():
+def sort_by_standard_deviation():
 
     global transposed_raw_data_matrix
     global ALL_count
@@ -273,9 +273,9 @@ def sort_by_SNR():
         for sample_index in range(sample_count):
             attribute_list.append(transposed_raw_data_matrix[sample_index][attribute_index])
 
-        snr_value = snr.mod_SNR_3(attribute_list[:ALL_count], attribute_list[ALL_count: MLL_end_index], attribute_list[MLL_end_index:])
-        rounded_snr = math.ceil(snr_value * 1000) / 1000
-        snr_tuples.append((attribute_index, rounded_snr))
+        sd_value = statistics.standard_deviation(attribute_list[:ALL_count]) + statistics.standard_deviation(attribute_list[ALL_count: MLL_end_index]) + statistics.standard_deviation(attribute_list[MLL_end_index:])
+        rounded_sd = math.ceil(sd_value * 10000) / 10000
+        snr_tuples.append((attribute_index, rounded_sd))
 
     sort.randomized_quick_sort_for_tuples(snr_tuples, 0, len(snr_tuples) - 1)
 
@@ -363,7 +363,7 @@ def main():
     write_as_csv()
     convert_datapoints_to_number()
     normalize_data()
-    sort_by_SNR()
+    sort_by_standard_deviation()
     prepare_selected_dataset()
     write_to_file()
 
