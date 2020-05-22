@@ -1,3 +1,7 @@
+# This repository is out-dated and not maintained. Use the <a href="https://github.com/kalyaniuniversity/mgx-datasets" target="_blank">kalyaniuniversity/mgx-datasets</a> repository instead.
+
+---
+
 Python program(s) to be used as reference for preprocessing datasets.
 <br/><br/>
 How to use them? It's really simple!
